@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="STM32F103C8T6 笔记, 吱呜猪 stm32 python 高等数学">
+    <meta name="keywords" content="stm32笔记, 吱呜猪 stm32 python 高等数学">
     <meta name="description" content="  我 | 单片机 | python">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>STM32F103C8T6 笔记 | 吱呜猪</title>
+    <title>stm32笔记 | 吱呜猪</title>
 
     <link rel="icon" type="image/jpeg" href="https://i.bmp.ovh/imgs/2022/01/24b9d90c41d9a702.jpg">
 
@@ -510,12 +510,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928013951.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928014458.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">STM32F103C8T6 笔记</h1>
+                    <h1 class="description center-align post-title">stm32笔记</h1>
                 </div>
             </div>
         </div>
@@ -634,13 +634,9 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                    <div class="article-tag">
-                        
-                            <a href="/tags/%E6%9D%A8%E6%9D%A8/">
-                                <span class="chip bg-color">杨杨</span>
-                            </a>
-                        
-                    </div>
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -652,7 +648,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-01-19
+                    2022-01-23
                 </div>
                 
 
@@ -695,14 +691,10 @@
 <h1 id="一-寄存器"><a href="#一-寄存器" class="headerlink" title="一 .寄存器"></a>一 .寄存器</h1><h2 id="1-存储器映射"><a href="#1-存储器映射" class="headerlink" title="1  存储器映射"></a>1  存储器映射</h2><p>存储器不具有地址信息，地址由用户或者芯片厂商分配，<br>给存储器分配地址的过程被称为存储器映射。 </p>
 <h2 id="2-寄存器映射"><a href="#2-寄存器映射" class="headerlink" title="2   寄存器映射"></a>2   寄存器映射</h2><p>给存储器分配地址的过程叫存储器映射，再分配一个地址叫重映射。</p>
 <ul>
-<li><p>在51单片机中，利用sfr和sbit关键字，实现的存储器映射</p>
-</li>
-<li><p>在stm32中，利用指针和宏定义实现寄存器映射</p>
-</li>
+<li>在51单片机中，利用sfr和sbit关键字，实现的存储器映射</li>
+<li>在stm32中，利用指针和宏定义实现寄存器映射</li>
 </ul>
-<font size="4">**存储器地址 + 总线基地址 +外设基地址 + 外设寄存器地址= 寄存器的绝对地址**</font>
-
-<p> 存储器地址：</p>
+<p><font size="4"><strong>存储器地址 + 总线基地址 +外设基地址 + 外设寄存器地址= 寄存器的绝对地址</strong></font><br>存储器地址：</p>
 <pre><code>Block0 --- Code （片内FLASH）
 Block1 --- SRAM
 Block2 --- 控制片上外设
@@ -739,8 +731,7 @@ RCC_APB1/APB2 RSTR---外设复位寄存器
 RCC_BDCR--------备份域控制寄存器
 RCC_CSR---------控制/状态寄存器
 ………………
-</code></pre><hr>
-<h1 id="二-新建工程模板"><a href="#二-新建工程模板" class="headerlink" title="二 .新建工程模板"></a>二 .新建工程模板</h1><pre><code>1 Startup-&gt;启动文件
+</code></pre><h1 id="二-新建工程模板"><a href="#二-新建工程模板" class="headerlink" title="二 .新建工程模板"></a>二 .新建工程模板</h1><pre><code>1 Startup-&gt;启动文件
 
 2 user-&gt;用户程序（包括主函数）
 
@@ -752,13 +743,12 @@ RCC_CSR---------控制/状态寄存器
 
 6 CMSIS-&gt;内核驱动程序
 </code></pre><ul>
-<li>axf文件是通过编译器烧录程序的文件</li>
+<li><p>axf文件是通过编译器烧录程序的文件</p>
+</li>
+<li><p>hex文件是串口烧录软件使用的文件</p>
+<h1 id="三-寄存器应用"><a href="#三-寄存器应用" class="headerlink" title="三 .寄存器应用"></a>三 .寄存器应用</h1></li>
 </ul>
-<ul>
-<li>hex文件是串口烧录软件使用的文件</li>
-</ul>
-<hr>
-<h1 id="三-寄存器应用"><a href="#三-寄存器应用" class="headerlink" title="三 .寄存器应用"></a>三 .寄存器应用</h1><p><a target="_blank" rel="noopener" href="https://i.bmp.ovh/imgs/2022/01/c4a2b5d51133aa9c.png">STM32F103C8T6引脚定义</a></p>
+<p><a target="_blank" rel="noopener" href="https://i.bmp.ovh/imgs/2022/01/c4a2b5d51133aa9c.png">STM32F103C8T6引脚定义</a></p>
 <p>VDD-&gt;正电源</p>
 <p> VBAT-&gt;正电源</p>
 <p> VSS-&gt;接地</p>
@@ -769,33 +759,23 @@ RCC_CSR---------控制/状态寄存器
 <p>通用推挽输出-&gt;GPIO_Mode_Out_PP</p>
 <ol>
 <li>推：输出高电平，电流流出到负载，灌电流</li>
+<li>挽：输出低电平，电流流向芯片，拉电流<br>通用开漏输出-&gt;GPIO_Mode_Out_OD</li>
 </ol>
 </blockquote>
 <ol>
-<li>挽：输出低电平，电流流向芯片，拉电流</li>
-</ol>
-<blockquote>
-<p>通用开漏输出-&gt;GPIO_Mode_Out_OD</p>
+<li>只能输出低电平，不能输出高电平   </li>
+<li>具有“线与”功能，一个为低，全部为低，用于I2C和SMBUS总线<blockquote>
+<p>复用推挽输出-&gt;GPIO_Mode_AF_PP<br>通用开漏输出-&gt;GPIO_Mode_Out_OD</p>
 </blockquote>
-<ol>
-<li><p>只能输出低电平，不能输出高电平   </p>
-</li>
-<li><p>具有“线与”功能，一个为低，全部为低，用于I2C和SMBUS总线</p>
 </li>
 </ol>
-<blockquote>
-<p>复用推挽输出-&gt;GPIO_Mode_AF_PP</p>
-<p>通用开漏输出-&gt;GPIO_Mode_Out_OD</p>
-</blockquote>
 <p><em>GPIO输入（ L: &lt;1.2V ;  H: &gt;2.0V）:</em> </p>
 <blockquote>
 <p>模拟输入-&gt;GPIO_Mode_AIN</p>
 <p>浮空输入-&gt;GPIO_Mode_IN_FLOATING</p>
 <p>上拉输入-&gt;GPIO_Mode_IPU</p>
 <p>下拉输入-&gt;GPIO_Mode_IPD</p>
-</blockquote>
-<h3 id="GPIO的速度选择-bit1-bit0"><a href="#GPIO的速度选择-bit1-bit0" class="headerlink" title="GPIO的速度选择:bit1 bit0"></a>GPIO的速度选择:bit1 bit0</h3><blockquote>
-<p>输入模式（复位后的状态）-&gt;00</p>
+<h3 id="GPIO的速度选择-bit1-bit0"><a href="#GPIO的速度选择-bit1-bit0" class="headerlink" title="GPIO的速度选择:bit1 bit0"></a>GPIO的速度选择:bit1 bit0</h3><p>输入模式（复位后的状态）-&gt;00</p>
 <p>输出最大速度为10MHZ-&gt;GPIO_Speed_10MHz-&gt;01</p>
 <p>输出最大速度为2MHZ-&gt;GPIO_Speed_2MHz-&gt;10</p>
 <p>输出最大速度为50MHZ-&gt;GPIO_Speed_50MHz-&gt;11</p>
@@ -826,7 +806,7 @@ RCC_CSR---------控制/状态寄存器
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://yang154.github.io/posts/6a0f69b9.html">http://yang154.github.io/posts/6a0f69b9.html</a>
+                    <a href="http://yang154.github.io/posts/bad7aa47.html">http://yang154.github.io/posts/bad7aa47.html</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -863,11 +843,7 @@ RCC_CSR---------控制/状态寄存器
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            
-                                <a href="/tags/%E6%9D%A8%E6%9D%A8/">
-                                    <span class="chip bg-color">杨杨</span>
-                                </a>
-                            
+                            <span class="chip bg-color">无标签</span>
                         </div>
                     
                 </div>
@@ -1341,13 +1317,13 @@ new Valine({
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/posts/0.html">
+                <a href="/posts/70508bfe.html">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928021815.jpg" class="responsive-img" alt="">
+                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928020502.jpg" class="responsive-img" alt="高数笔记">
                         
-                        <span class="card-title"></span>
+                        <span class="card-title">高数笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1358,7 +1334,7 @@ new Valine({
                     </div>
                     <div class="publish-info">
                         <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-22
+                            <i class="far fa-clock fa-fw icon-date"></i>2022-01-23
                         </span>
                         <span class="publish-author">
                             
@@ -1641,7 +1617,7 @@ new Valine({
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">1.2k</span>&nbsp;字
+                class="white-color">1.8k</span>&nbsp;字
             
             
             
