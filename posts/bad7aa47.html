@@ -655,21 +655,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-01-27
+                    2022-02-04
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.1k
+                    1.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    5 分
                 </div>
                 
 
@@ -796,6 +796,80 @@ stm32f10x_fsmc.h
 stm32f10x_it.h
 中断服务函数你可以随意放在其他的地方，并不是一定要放在stm32f10x_it.c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 </li>
+</ol>
+<h1 id="EXTI—外部中断-事件控制器"><a href="#EXTI—外部中断-事件控制器" class="headerlink" title="EXTI—外部中断/事件控制器"></a>EXTI—外部中断/事件控制器</h1><h2 id="EXTI-InitpeDEF"><a href="#EXTI-InitpeDEF" class="headerlink" title="EXTI_InitpeDEF"></a>EXTI_InitpeDEF</h2><pre class="line-numbers language-none"><code class="language-none">1.  EXTI_Line:用于产生中断/事件线
+2.  EXTI_Mode:EXTI模式(中断/事件)
+3.  EXTI_Trigger:触发(上/下/上下)
+4.  EXTI_LineCmd:使能或者失能(IMR/EMR)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">Priority-&gt;中断优先级    
+ESR-&gt;中断服务程序
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="中断类型："><a href="#中断类型：" class="headerlink" title="中断类型："></a>中断类型：</h2><ol>
+<li>系统异常，体现在内核水平 </li>
+<li>外部中断，体现在外设水平</li>
+</ol>
+<h2 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h2><p>嵌套向量中断控制器,属于内核外设,<br>管理这包括内核和片上外设所有外设的中断相关的功能<br></p><pre class="line-numbers language-none"><code class="language-none">NVIC寄存器简介,core_cm3.h中的结构体定义:
+    ISER:中断使能寄存器
+    ICER:中断清除寄存器
+    ISPR:中断使能悬起寄存器
+    ICPR：中断七年给出悬起寄存器
+    IABR：中断有效位寄存器
+    IP：中断优先级寄存器（8Bit　wide）
+    STIR：软件触发中断寄存器<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
+<h2 id="中断优先级的定义"><a href="#中断优先级的定义" class="headerlink" title="中断优先级的定义"></a>中断优先级的定义</h2><p>优先级设定:NVIC-&gt;IPRx</p>
+<p>优先级分组:SCB-&gt;AIRCR:PRIGROUP[10:8]</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">优先级分组</th>
+<th style="text-align:center">抢占(主)优先级</th>
+<th style="text-align:center">响应(子)优先级</th>
+<th style="text-align:center">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">NVIC_PriorityGroup_0</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">0-15</td>
+<td style="text-align:center">主-0Bite,子-4Bite</td>
+</tr>
+<tr>
+<td style="text-align:center">NVIC_PriorityGroup_1</td>
+<td style="text-align:center">0-1</td>
+<td style="text-align:center">0-7</td>
+<td style="text-align:center">主-1Bite,子-3Bite</td>
+</tr>
+<tr>
+<td style="text-align:center">NVIC_PriorityGroup_2</td>
+<td style="text-align:center">0-3</td>
+<td style="text-align:center">0-3</td>
+<td style="text-align:center">主-2Bite,子-2Bite</td>
+</tr>
+<tr>
+<td style="text-align:center">NVIC_PriorityGroup_3</td>
+<td style="text-align:center">0-7</td>
+<td style="text-align:center">0-1</td>
+<td style="text-align:center">主-3Bite,子-1Bite</td>
+</tr>
+<tr>
+<td style="text-align:center">NVIC_PriorityGroup_4</td>
+<td style="text-align:center">0-15</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">主-4Bite,子-0Bite</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="中断编程的顺序"><a href="#中断编程的顺序" class="headerlink" title="中断编程的顺序"></a>中断编程的顺序</h2><ol>
+<li>使能中断请求</li>
+</ol>
+<pre class="line-numbers language-none"><code class="language-none">     <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ol>
+<li>配置中断优先级分组</li>
+<li>配置NVIC寄存器,初始化NVIC_InitTypeDef</li>
+<li>编写中断服务函数</li>
 </ol>
 
                 
@@ -1371,13 +1445,13 @@ new Valine({
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/6c27b784.html">
+                <a href="/posts/70508bfe.html">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928011708.jpg" class="responsive-img" alt="思维导图">
+                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928020502.jpg" class="responsive-img" alt="高数笔记">
                         
-                        <span class="card-title">思维导图</span>
+                        <span class="card-title">高数笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1634,7 +1708,7 @@ new Valine({
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">2.8k</span>&nbsp;字
+                class="white-color">3.7k</span>&nbsp;字
             
             
             
