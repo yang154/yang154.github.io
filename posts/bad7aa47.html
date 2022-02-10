@@ -655,21 +655,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2022-02-04
+                    2022-02-09
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1.4k
+                    3.4k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    5 分
+                    13 分
                 </div>
                 
 
@@ -687,7 +687,7 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="芯片构成"><a href="#芯片构成" class="headerlink" title="芯片构成"></a>芯片构成</h1><p><a target="_blank" rel="noopener" href="https://i.bmp.ovh/imgs/2022/01/d4228d3e326eb632.png">STM32系统结构框图</a></p>
+                <p><strong>芯片构成</strong><br><a target="_blank" rel="noopener" href="https://i.bmp.ovh/imgs/2022/01/d4228d3e326eb632.png">STM32系统结构框图</a></p>
 <h1 id="一-寄存器"><a href="#一-寄存器" class="headerlink" title="一 .寄存器"></a>一 .寄存器</h1><h2 id="1-存储器映射"><a href="#1-存储器映射" class="headerlink" title="1  存储器映射"></a>1  存储器映射</h2><p>存储器不具有地址信息，地址由用户或者芯片厂商分配，<br>给存储器分配地址的过程被称为存储器映射。 </p>
 <h2 id="2-寄存器映射"><a href="#2-寄存器映射" class="headerlink" title="2   寄存器映射"></a>2   寄存器映射</h2><p>给存储器分配地址的过程叫存储器映射，再分配一个地址叫重映射。</p>
 <ul>
@@ -768,8 +768,11 @@ RCC_CSR---------控制/状态寄存器
 输出最大速度为10MHZ-&gt;GPIO_Speed_10MHz-&gt;01
 输出最大速度为2MHZ-&gt;GPIO_Speed_2MHz-&gt;10
 输出最大速度为50MHZ-&gt;GPIO_Speed_50MHz-&gt;11<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<h1 id="stm32固件库分析"><a href="#stm32固件库分析" class="headerlink" title="stm32固件库分析"></a>stm32固件库分析</h1><ol>
-<li>汇编编写的启动文件<pre class="line-numbers language-none"><code class="language-none">startup_stm32f10x_hd.s:设置堆栈指针、设置pc指针、初始化中断向量表、配置系统时钟、调用c库函数_main最终去到c的世界<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<h3 id="位带操作"><a href="#位带操作" class="headerlink" title="位带操作"></a>位带操作</h3><p>一个比特位膨胀后,变成四个字节,膨胀后的区域称为位带别名区,<br>访问位带别名区时,就可以打造访问为带区某个比特位的目的</p>
+<pre class="line-numbers language-none"><code class="language-none">#define BITBAND(addr, bitnum) ((addr &amp; 0xF0000000)+0x02000000+((addr &amp; 0x00FFFFFF)&lt;&lt;5)+(bitnum&lt;&lt;2)) <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h1 id="四-stm32固件库分析"><a href="#四-stm32固件库分析" class="headerlink" title="四 .stm32固件库分析"></a>四 .stm32固件库分析</h1><ol>
+<li>汇编编写的启动文件<pre class="line-numbers language-none"><code class="language-none">startup_stm32f10x_hd.s:设置堆栈指针、设置pc指针、初始化中断向量表、
+配置系统时钟、调用c库函数_main最终去到c的世界<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
 <li><p>时钟配置文件</p>
  <pre class="line-numbers language-none"><code class="language-none">system_stm32f10x.c:把外部时钟HSE=8M，经过PLL倍频为72M。<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 </li>
@@ -778,13 +781,14 @@ RCC_CSR---------控制/状态寄存器
 <li>外设相关的 <pre class="line-numbers language-none"><code class="language-none">stm32f10x.h:实现了内核之外的外设的寄存器映射
 xxx:GP1O、USRAT、I2c、SPI、FSMc
 stm32f10x_xx_c:外设的驱动函数库文件
-stm32f10x_xx,h:存放外设的初始化结构体，外设初始化结构体成员的参数列表，外设固件库函数的声明<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre></li>
+stm32f10x_xx,h:存放外设的初始化结构体，
+外设初始化结构体成员的参数列表，外设固件库函数的声明.<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 <li>内核相关的 <pre class="line-numbers language-none"><code class="language-none">CMSIS——Cortex:微控制器软件接口标准
 core_cm3.h:实现了内核里面外设的寄存器映射      
 core_cm3.c:内核外设的驱动固件库
 NVIC(嵌套向量中断控制器)、sysTick(系统滴答定时器)
 misc.h:内核的外设,cortex-m3内核经过裁剪的内核外设程序
-misc.c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+misc.c:内核外设的库函数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 <li>头文件的配置文件 <pre class="line-numbers language-none"><code class="language-none">stm32f10x_conf.h:头文件的头文件
 stm32f10x_usart.h
 stm32f10x_i2c.h
@@ -794,28 +798,24 @@ stm32f10x_fsmc.h
 …………<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
 <li>专门存放中断服务函数的c文件 <pre class="line-numbers language-none"><code class="language-none">stm32f10x_it.c
 stm32f10x_it.h
-中断服务函数你可以随意放在其他的地方，并不是一定要放在stm32f10x_it.c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-</li>
+中断服务函数可以随意放在其他的地方，并不是一定要放在stm32f10x_it.c<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h1 id="五-启动文件解析"><a href="#五-启动文件解析" class="headerlink" title="五 .启动文件解析"></a>五 .启动文件解析</h1><h1 id="六-RCC时钟配置"><a href="#六-RCC时钟配置" class="headerlink" title="六. RCC时钟配置"></a>六. RCC时钟配置</h1><h1 id="七-中断与事件"><a href="#七-中断与事件" class="headerlink" title="七 .中断与事件"></a>七 .中断与事件</h1></li>
 </ol>
-<h1 id="EXTI—外部中断-事件控制器"><a href="#EXTI—外部中断-事件控制器" class="headerlink" title="EXTI—外部中断/事件控制器"></a>EXTI—外部中断/事件控制器</h1><h2 id="EXTI-InitpeDEF"><a href="#EXTI-InitpeDEF" class="headerlink" title="EXTI_InitpeDEF"></a>EXTI_InitpeDEF</h2><pre class="line-numbers language-none"><code class="language-none">1.  EXTI_Line:用于产生中断/事件线
-2.  EXTI_Mode:EXTI模式(中断/事件)
-3.  EXTI_Trigger:触发(上/下/上下)
-4.  EXTI_LineCmd:使能或者失能(IMR/EMR)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<pre class="line-numbers language-none"><code class="language-none">Priority-&gt;中断优先级    
-ESR-&gt;中断服务程序
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">Priority-&gt;优先级    
+ESR-&gt;中断服务程序<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <h2 id="中断类型："><a href="#中断类型：" class="headerlink" title="中断类型："></a>中断类型：</h2><ol>
 <li>系统异常，体现在内核水平 </li>
 <li>外部中断，体现在外设水平</li>
 </ol>
-<h2 id="NVIC"><a href="#NVIC" class="headerlink" title="NVIC"></a>NVIC</h2><p>嵌套向量中断控制器,属于内核外设,<br>管理这包括内核和片上外设所有外设的中断相关的功能<br></p><pre class="line-numbers language-none"><code class="language-none">NVIC寄存器简介,core_cm3.h中的结构体定义:
-    ISER:中断使能寄存器
-    ICER:中断清除寄存器
-    ISPR:中断使能悬起寄存器
-    ICPR：中断七年给出悬起寄存器
-    IABR：中断有效位寄存器
-    IP：中断优先级寄存器（8Bit　wide）
-    STIR：软件触发中断寄存器<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p></p>
+<h2 id="NVIC嵌套向量中断控制器"><a href="#NVIC嵌套向量中断控制器" class="headerlink" title="NVIC嵌套向量中断控制器"></a>NVIC嵌套向量中断控制器</h2><pre class="line-numbers language-none"><code class="language-none">  NVIC属于内核外设,管理这包括内核和片上外设所有外设的中断相关的功能.
+NVIC寄存器简介,core_cm3.h中的结构体定义(Cortex-M3编程手册):
+    NVIC_ISER:中断使能寄存器
+    NVIC_ICER:中断清除寄存器
+    NVIC_ISPR:中断使能悬起寄存器
+    NVIC_ICPR：中断失能悬起寄存器
+    NVIC_IABR：中断有效位寄存器
+    NVIC_IP：中断优先级寄存器（8Bit　wide）
+    NVIC_STIR：软件触发中断寄存器<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <h2 id="中断优先级的定义"><a href="#中断优先级的定义" class="headerlink" title="中断优先级的定义"></a>中断优先级的定义</h2><p>优先级设定:NVIC-&gt;IPRx</p>
 <p>优先级分组:SCB-&gt;AIRCR:PRIGROUP[10:8]</p>
 <div class="table-container">
@@ -865,12 +865,259 @@ ESR-&gt;中断服务程序
 <h2 id="中断编程的顺序"><a href="#中断编程的顺序" class="headerlink" title="中断编程的顺序"></a>中断编程的顺序</h2><ol>
 <li>使能中断请求</li>
 </ol>
-<pre class="line-numbers language-none"><code class="language-none">     <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<pre class="line-numbers language-none"><code class="language-none">1.控制寄存器(USART_CRx)(x=1,2,3):发送完成中断使能
+2.NVIC-&gt;ISER中断使能寄存器<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ol>
-<li>配置中断优先级分组</li>
-<li>配置NVIC寄存器,初始化NVIC_InitTypeDef</li>
-<li>编写中断服务函数</li>
+<li>配置中断优先级分组<pre class="line-numbers language-none"><code class="language-none">1.配置SCB_AIRC寄存器[8:10]
+固件库操作:misc-&gt;NVIC_PriorityGroupConfig()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre></li>
+<li>配置NVIC寄存器,<pre class="line-numbers language-none"><code class="language-none">NVIC_IRQChannel-&gt;中断源
+NVIC_IRQChannelPreemptionPriority-&gt;抢占优先级
+NVIC_IRQChannelSubPriority-&gt;子优先级
+NVIC_IRQChannelCmd-&gt;使能或失能
+以上初始化结构体NVIC_InitTypeDef
+
+NVIC_Init();//初始化函数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>编写中断服务函数</p>
+<pre class="line-numbers language-none"><code class="language-none">中断服务函数名要与启动文件里的中断服务函数名称相对应.写错了不会报错
+中断服务函数写在stm32f10x_it里面<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="EXTI—外部-中断-事件-控制器"><a href="#EXTI—外部-中断-事件-控制器" class="headerlink" title="EXTI—外部 中断/事件 控制器"></a>EXTI—外部 中断/事件 控制器</h2><p><img src="https://s3.bmp.ovh/imgs/2022/02/b5773a3f5e641d9c.png" alt="外部中断/事件控制器框图"></p>
+<h3 id="输入线"><a href="#输入线" class="headerlink" title="输入线"></a>输入线</h3><p><a target="_blank" rel="noopener" href="https://s3.bmp.ovh/imgs/2022/02/6011b35247758c8e.png">20个中断源</a></p>
+<pre class="line-numbers language-none"><code class="language-none">通过配置外部中断配置寄存器(AFIO_EXTICRx)(x=1,2,3,4)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="EXTI各寄存器"><a href="#EXTI各寄存器" class="headerlink" title="EXTI各寄存器"></a>EXTI各寄存器</h3><pre class="line-numbers language-none"><code class="language-none">上升沿触发选择寄存器(EXTI_RTSR)
+下降沿触发选择寄存器(EXTI_FTSR)
+软件中断事件寄存器(EXTI_SWIER)
+挂起寄存器(EXTI_PR)
+中断屏蔽寄存器(EXTI_IMR)
+事件屏蔽寄存器(EXTI_EMR)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="EXTI编程顺序"><a href="#EXTI编程顺序" class="headerlink" title="EXTI编程顺序"></a>EXTI编程顺序</h2></li>
+<li><p>初始化要连接到EXTI的GPIO</p>
+<pre class="line-numbers language-none"><code class="language-none">//GPIO初始化
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+    GPIO_InitTypeDef GPIO_InitStructure;
+    GPIO_InitStructure.GPIO_Mode=GPIO_Mode_IPU;//上拉输入
+//也可以浮空输入GPIO_Mode_IN_FLOATING
+    GPIO_InitStructure.GPIO_Pin=GPIO_Pin_1;
+    GPIO_Init(GPIOA,&amp;GPIO_InitStructure);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>初始化EXTI用于产生中断/事件(stm32f10x_exti.h)<pre class="line-numbers language-none"><code class="language-none">//EXTI初始化
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO,ENABLE);
+    GPIO_EXTILineConfig(GPIO_PortSourceGPIOA,GPIO_PinSource1);
+    EXTI_InitTypeDef EXTI_InitStructure;
+    EXTI_InitStructure.EXTI_Line=EXTI_Line1;//用于产生中断/事件线,配置输入线
+    EXTI_InitStructure.EXTI_LineCmd=ENABLE;使能或者失能(IMR/EMR),中断/事件屏蔽寄存器
+    EXTI_InitStructure.EXTI_Mode=EXTI_Mode_Interrupt;//EXTI模式(中断/事件)
+    EXTI_InitStructure.EXTI_Trigger=EXTI_Trigger_Falling;//下降沿触发,触发(上/下/上下)
+//  EXTI_Trigger_Rising 上升沿触发
+//  EXTI_Trigger_Rising_Falling 双边触发
+    EXTI_Init(&amp;EXTI_InitStructure);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>初始化NVIC,用于处理中断(misc.h)<pre class="line-numbers language-none"><code class="language-none">static void EXTI_NVIC_Config(void)
+{
+    NVIC_InitTypeDef NVIC_InitStructure;
+    NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);//选择优先级分组
+    NVIC_InitStructure.NVIC_IRQChannel=EXTI1_IRQn;//中断源选择
+    NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;//使能
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//主优先级
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority=1;//次优先级
+    NVIC_Init(&amp;NVIC_InitStructure);
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>编写中断服务函数<pre class="line-numbers language-none"><code class="language-none">EXTI1_IRQHandler()
+{
+    if(EXTI_GetITStatus(EXTI_Line1)==1)//判断中断/事件屏蔽寄存器是否开放
+    {
+        GPIOB-&gt;ODR^=GPIO_Pin_0;//发生中断后运行的程序
+    }
+    EXTI_ClearITPendingBit(EXTI_Line1);//清除挂起寄存器,跳回主函数
+}
+可在启动文件中寻找中断服务函数名;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>main函数调用</li>
 </ol>
+<h1 id="八-SysTick-滴答定时器"><a href="#八-SysTick-滴答定时器" class="headerlink" title="八 . SysTick(滴答定时器)"></a>八 . SysTick(滴答定时器)</h1><p>系统滴答定时器,24位,只能递减存在于内核,嵌套在NVIC中(详情在Cortex-M3编程手册)</p>
+<ol>
+<li><p>SysTick控制及状态寄存器-&gt;STK_CTRL</p>
+<p> |位段|名称|功能|<br> |:—:|:—:|:—:|<br> |16|COUNTFLAG|计数完成标志位|<br> |2|CLKSOURCE|时钟源选择位,0=AHB/8,1=处理器时钟AHB|<br> |1|TICKINT|中断使能,1=使能中断服务程序,0=数到0时无动作|<br> |0|ENABLE|Systick定时器使能位|</p>
+</li>
+</ol>
+<ol>
+<li><p>SysTick重装载数值寄存器-&gt;STK_LOAD</p>
+<p> |位段|名称|功能|<br> |:—:|:—:|:—:|<br> |23:0|RELOAD|计数器到0时,被重装的值|</p>
+</li>
+</ol>
+<ol>
+<li><p>SysTick当前数值寄存器-&gt;STK_VAL</p>
+<p> |位段|名称|功能|<br> |:—:|:—:|:—:|<br> |23:0|CYRRENT|读取时返回当前倒计数的值,写1-&gt;清零|</p>
+</li>
+<li><p>SysTick校准寄存器-&gt;STK_CALLIB</p>
+</li>
+</ol>
+<h1 id="九-通信的基本概念"><a href="#九-通信的基本概念" class="headerlink" title="九 .通信的基本概念"></a>九 .通信的基本概念</h1><h2 id="数据传输方式"><a href="#数据传输方式" class="headerlink" title="数据传输方式"></a>数据传输方式</h2><ol>
+<li>并行</li>
+<li>串行:USART,I2C,SPI</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">特性</th>
+<th style="text-align:center">串行通讯</th>
+<th style="text-align:center">并行通讯</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">通讯距离</td>
+<td style="text-align:center">较远</td>
+<td style="text-align:center">较近</td>
+</tr>
+<tr>
+<td style="text-align:center">抗干扰能力</td>
+<td style="text-align:center">较强</td>
+<td style="text-align:center">较弱</td>
+</tr>
+<tr>
+<td style="text-align:center">传输速率</td>
+<td style="text-align:center">较慢</td>
+<td style="text-align:center">较快</td>
+</tr>
+<tr>
+<td style="text-align:center">成本</td>
+<td style="text-align:center">较低</td>
+<td style="text-align:center">较高</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="数据通信方向"><a href="#数据通信方向" class="headerlink" title="数据通信方向"></a>数据通信方向</h2><ol>
+<li>全双工<br>USAART,SPI,可同时进行收发数据</li>
+<li>半双工<br>USAART,SPI不可同时手法数据,可分时收发数据</li>
+<li>单工<br>任何时刻都只能往某个固定方向传输数据</li>
+</ol>
+<h2 id="数据同步方式"><a href="#数据同步方式" class="headerlink" title="数据同步方式"></a>数据同步方式</h2><ol>
+<li>同步<br>有数据线和时钟线,对时钟要求高:———————————-UART</li>
+<li>异步<br>有通信起始位,数据停止位,数据校验位,包含各种标识符:USART</li>
+</ol>
+<h2 id="通信速率"><a href="#通信速率" class="headerlink" title="通信速率"></a>通信速率</h2><ol>
+<li>Bitrate-比特率:每秒传输的二级制位数,单位比特每秒(bit/s)</li>
+<li>Baudrate-波特率:每秒传输的码元个数</li>
+</ol>
+<p>当两个进制位表示一个码元时,没区别,<br>当两个进制位表示一个码元时,有区别,</p>
+<h1 id="十-串口通信协议"><a href="#十-串口通信协议" class="headerlink" title="十 .串口通信协议"></a>十 .串口通信协议</h1><h2 id="RS232标准"><a href="#RS232标准" class="headerlink" title="RS232标准"></a>RS232标准</h2><pre><code>{控制器A&lt;---TTL电平---&gt;电平转换芯片&lt;-----&gt;DB9接口}&lt;----&gt;
+{DB9&lt;----&gt;电平转换芯片&lt;---TTL电平---&gt;控制器B}
+</code></pre><ol>
+<li>RS232标准串口主要用于工业设备直接通信,容错率更高</li>
+<li>电平转换芯片一般有MAX323,SP3232</li>
+</ol>
+<script type="math/tex; mode=display">RS232 \bigg\{^{15V=高电平1}_{-15V=低电平0}</script><script type="math/tex; mode=display">TTL \bigg\{^{5V或3.3V=高电平1}_{0V=低电平0}</script><h2 id="USB转串口"><a href="#USB转串口" class="headerlink" title="USB转串口"></a>USB转串口</h2><pre><code>{控制器A&lt;---TTL电平---&gt;电平转换芯片&lt;-----&gt;DUSB接口}&lt;----&gt;电脑
+</code></pre><ol>
+<li>USB转串口主要用于设备跟电脑通信</li>
+<li>电平转换芯片一般有CH340,PL2303,CP2102,FT232</li>
+<li>使用时,电脑端需要安装电平转换芯片的驱动</li>
+</ol>
+<h2 id="串口数据包"><a href="#串口数据包" class="headerlink" title="串口数据包"></a>串口数据包</h2><pre><code>起始位-&gt;有效数据-&gt;校验位-&gt;结束位
+</code></pre><p>校验:数据的抗干扰性</p>
+<ol>
+<li>奇校验-&gt;USART_Parity_Odd:有效数据和校验位中’1’的个数为奇数</li>
+<li>偶校验-&gt;USART_Parity_Even:有效数据和校验位中’1’的个数为偶数</li>
+<li>0校验:校验位总为0</li>
+<li>1校验:校验位总为1</li>
+<li>无校验不包含校验位</li>
+</ol>
+<h1 id="十一-USART—串口通信"><a href="#十一-USART—串口通信" class="headerlink" title="十一 .USART—串口通信"></a>十一 .USART—串口通信</h1><p><a target="_blank" rel="noopener" href="https://i.bmp.ovh/imgs/2022/02/350e5bc28bafbdde.png">USART功能框图</a></p>
+<h2 id="引脚"><a href="#引脚" class="headerlink" title="引脚"></a>引脚</h2><pre class="line-numbers language-none"><code class="language-none">TX:数据发送
+RX:数据接受
+SCLK:时钟,仅同步通信时使用
+nPTS:请求发送(n表示低电平有效)
+nCTS:允许发送<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><img src="https://i.bmp.ovh/imgs/2022/02/67f4a9fdbf524e69.png" alt=""><br>注意:USART1挂载到APB2总线上.传输速率更高,USART为可支持异步/同步通信,UART只支持同步.</p>
+<h2 id="寄存器"><a href="#寄存器" class="headerlink" title="寄存器"></a>寄存器</h2><ol>
+<li>数据寄存器-&gt;USART_DR：9位有效，包含一个发送数据寄存器TDR和一个接收数据寄存器RDR。<br>一个地址对应了两个物理内存.类似于51中的SBUF</li>
+<li>状态寄存器-&gt;USART_SR</li>
+<li>控制寄存器-&gt;USART_CRx(x=1,2,3)</li>
+<li>波特率寄存器：<script type="math/tex; mode=display">Tx/Rx波特率=\dfrac{\mathrm{f_{CK}}}{\mathrm{(16*USARTDIV)}}</script></li>
+</ol>
+<h2 id="USART串口编程顺序"><a href="#USART串口编程顺序" class="headerlink" title="USART串口编程顺序"></a>USART串口编程顺序</h2><ol>
+<li>初始化串口需要用到的GPIO<pre class="line-numbers language-none"><code class="language-none">//GPIO初始化
+RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA,ENABLE);
+GPIO_InitTypeDef GPIO_InitStructure;
+//TX设置为复用推挽输出 
+GPIO_InitStructure.GPIO_Mode=GPIO_Mode_AF_PP;
+GPIO_InitStructure.GPIO_Pin=GPIO_Pin_9;
+GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
+GPIO_Init(GPIOA,&amp;GPIO_InitStructure); 
+ //RX设置为浮空输入
+GPIO_InitStructure.GPIO_Mode=GPIO_Mode_IN_FLOATING;
+GPIO_InitStructure.GPIO_Pin=GPIO_Pin_10;
+GPIO_Init(GPIOA,&amp;GPIO_InitStructure);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li>初始化串口，USART_InitTypeDef<pre class="line-numbers language-none"><code class="language-none">//串口工作参数设置,串口调试助手参数与以下参数相对应
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1,ENABLE);
+    USART_InitTypeDef USART_InitStructure;
+    USART_InitStructure.USART_BaudRate=115200;//设置波特率为115200
+    USART_InitStructure.USART_WordLength=USART_WordLength_8b;//数据有效位
+    USART_InitStructure.USART_StopBits=USART_StopBits_1;//停止位
+    USART_InitStructure.USART_Parity=USART_Parity_No;//校验位
+    USART_InitStructure.USART_Mode=USART_Mode_Rx|USART_Mode_Tx;
+    //工作模式,可接收可发送
+    USART_InitStructure.USART_HardwareFlowControl=
+    USART_HardwareFlowControl_None;    //硬件流控制
+    USART_Init(USART1,&amp;USART_InitStructure);<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></li>
+<li><p>中断配置（接收中断，中断优先级）</p>
+<pre class="line-numbers language-none"><code class="language-none">//串口中断优先级配置
+  NVIC_InitTypeDef NVIC_InitStructure;
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_1);//优先级分组
+  NVIC_InitStructure.NVIC_IRQChannel=USART1_IRQn;//中断源选择
+  NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=1;//主优先级
+  NVIC_InitStructure.NVIC_IRQChannelSubPriority=1;//次优先级
+  NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;//使能
+  NVIC_Init(&amp;NVIC_InitStructure);
+  
+  USART_ITConfig(USART1,USART_IT_RXNE,ENABLE);//接收数据中断使能<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>使能串口</p>
+<pre class="line-numbers language-none"><code class="language-none">USART_Cmd(USART1,ENABLE);//串口使能<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></li>
+<li><p>编写发送和接收函数</p>
+<pre class="line-numbers language-none"><code class="language-none">void USART_SendByte(USART_TypeDef* USARTx, uint8_t Data)//发送一个字节
+{
+    USART_SendData(USARTx,Data);//发送数据
+    while(USART_GetFlagStatus(USART1,USART_FLAG_TXE)==0);//判断发送是否完成
+}
+.............<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>编写中断服务函数</p>
+<pre class="line-numbers language-none"><code class="language-none">void USART1_IRQHandler(void)
+{
+    uint8_t temp;
+    if(USART_GetFlagStatus(USART1,USART_FLAG_RXNE)==1)
+    {
+        temp=USART_ReceiveData(USART1);
+        USART_SendData(USART1,temp);
+    }
+}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+<h1 id="十二-DMA—-gt-直接存储器访问"><a href="#十二-DMA—-gt-直接存储器访问" class="headerlink" title="十二 .DMA—>直接存储器访问"></a>十二 .DMA—&gt;直接存储器访问</h1><p>主要功能,把数据从一个地方搬到另一个地方,不占用CPU</p>
+<p>DMA1:有7个通道,可以实现P-&gt;M,M-&gt;P,M-&gt;M</p>
+<p>DMA2:有5个通道,可以实现P-&gt;M,M-&gt;P,M-&gt;M(只存在大容量和互联型产品)<br></p><pre class="line-numbers language-none"><code class="language-none">M-&gt;M:FLASH---&gt;SRAM,把内部FLASH的数据传输到内部的SRAM
+M-&gt;P:SRAM----&gt;串口,把内部SRAM的数据传输到外设<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><br><a target="_blank" rel="noopener" href="https://i.bmp.ovh/imgs/2022/02/7b12a8c59b3adebd.png">DMA1请求映射</a><br>DMA功能框图分为<p></p>
+<ol>
+<li>DMA请求</li>
+<li>通道</li>
+<li>仲裁器</li>
+</ol>
+<h2 id="DMA结构体"><a href="#DMA结构体" class="headerlink" title="DMA结构体"></a>DMA结构体</h2><pre class="line-numbers language-none"><code class="language-none">typedef struct
+{
+  uint32_t DMA_PeripheralBaseAddr; //外设地址-----&gt;DMA_CPAR
+  uint32_t DMA_MemoryBaseAddr; //存储器地址-------&gt;DMA_CMAR
+  uint32_t DMA_DIR;//传输方向---------------------&gt;DMA_CCR: DIR
+  uint32_t DMA_BufferSize;//传输数目--------------&gt;DMA_CNDTR
+  uint32_t DMA_PeripheralInc;//外设地址增量模式---&gt;DMA_CCRx:PINC
+  uint32_t DMA_MemoryInc;//存储器地址增量模式-----&gt;DMA_CCRx:MINC
+  uint32_t DMA_PeripheralDataSize; 外设数据宽度---&gt;DMA_CCRx:PSIZE
+  uint32_t DMA_MemoryDataSize;//存储器数据宽度----&gt;DMA_CCRx:MSIZE
+  uint32_t DMA_Mode; //模式选择-------------------&gt;DMA_CCRx:CIRC
+  uint32_t DMA_Priority; //通道优先级-------------&gt;DMA_CCR:PL
+  uint32_t DMA_M2M; //存储器到存储器模式----------&gt;DMA_CCRx:MEM2MEN
+}DMA_InitTypeDef;
+//SRC:源.DST:目标
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
                 
             </div>
@@ -1408,13 +1655,13 @@ new Valine({
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/posts/c00b24b1.html">
+                <a href="/posts/70508bfe.html">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928020152.jpg" class="responsive-img" alt="python笔记">
+                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928020502.jpg" class="responsive-img" alt="高数笔记">
                         
-                        <span class="card-title">python笔记</span>
+                        <span class="card-title">高数笔记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1445,13 +1692,13 @@ new Valine({
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/posts/70508bfe.html">
+                <a href="/posts/b24dd347.html">
                     <div class="card-image">
                         
                         
-                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928020502.jpg" class="responsive-img" alt="高数笔记">
+                        <img src="https://cdn.jsdelivr.net/gh/LuckyZmj/imgbed@master/posts/20200928020407.jpg" class="responsive-img" alt="我的第一篇博客文章">
                         
-                        <span class="card-title">高数笔记</span>
+                        <span class="card-title">我的第一篇博客文章</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -1462,7 +1709,7 @@ new Valine({
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-23
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-01-18
                             </span>
                         <span class="publish-author">
                             
@@ -1708,7 +1955,7 @@ new Valine({
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">3.7k</span>&nbsp;字
+                class="white-color">4.5k</span>&nbsp;字
             
             
             
