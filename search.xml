@@ -17,6 +17,19 @@
     
     
     <entry>
+      <title>思维导图</title>
+      <link href="posts/6c27b784.html"/>
+      <url>posts/6c27b784.html</url>
+      
+        <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><p></p><pre class="mermaid">graph LR<br>     a(句法)—&gt;b1(简单句)<br>         b1—&gt;c7(主谓)<br>         b1—&gt;c8(主谓宾)<br>         b1—&gt;c9(主系表)<br>         b1—&gt;c10(主谓宾+宾补)<p></p><pre><code> a--&gt;b2(主从复合句)    b2--&gt;c1(定语从句)    b2--&gt;c2(状语从句)    b2--&gt;c3(名词性从句)        c3--&gt;d1(主语从句)        c3--&gt;d2(宾语从句)        c3--&gt;d3(表语从句) a--&gt;b3(并列句) a--&gt;b4(特殊句子)     b4--&gt;c4(虚拟语气)     b4--&gt;c5(倒装句)     b4--&gt;c6(强调句)</code></pre><pre class="line-numbers language-none"><code class="language-none">```mermaidgraph LR     a(句子成分)--&gt;b1(主语)     a--&gt;b2(谓语)     a--&gt;b3(宾语)     a--&gt;b4(表语)     a--&gt;b5(补语)--&gt;c2(补充说明)     a--&gt;b6(状语)     a--&gt;b7(定语)         b7--&gt;c1(修饰名词)     a--&gt;b8(同位语)&lt;/pre&gt;&lt;pre class="mermaid"&gt;graph LR     a(动词分类)--&gt;b1(实义动词)         b1--&gt;c1(及物动词v.)--&gt;d1(能直接加宾语)         b1--&gt;c2(不及物动词v.)--&gt;d2(不能直接加宾语)--&gt;e1(介+宾)     a--&gt;b2(系动词)         b2--&gt;c3(be动词)--&gt;d3(is/am/are)         b2--&gt;c4(感官系动词)--&gt;d4(smell/taste)         b2--&gt;c5(变化系动词)--&gt;d5(become/turn/get)         b2--&gt;c6(保持系动词)--&gt;d6(keep/stay/remain)     a--&gt;b3(助动词,辅助)         b3--&gt;c7(do/does)--&gt;d7(否/疑)         b3--&gt;c8(have/has)--&gt;d8(时态)         b3--&gt;c9(情态动词)--&gt;d9(辅助表达语态语气)&lt;/pre&gt;实义动词和系动词区别1. 实义动词+n,    系动词+n/adj2. 系动词接adj/n作表语<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>名词可 充当主语、宾语，表语,同位语：<br>结构1：冠词+n。<br>结构2：形容词+n。<br>结构3：及物动词+n。名词充当动词的宾语<br>结构4：介词+n。名词充当介词的宾语<br>结构5：代词词+n。介词用来限定这个名词</p><p>```</p></pre>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>高数笔记</title>
       <link href="posts/70508bfe.html"/>
       <url>posts/70508bfe.html</url>
